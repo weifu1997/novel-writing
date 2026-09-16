@@ -63,7 +63,7 @@ python "<skill-dir>/scripts/story_state.py" batch-status \
 
 1. 运行 `context`（可无 ID），读取当前 `state_revision`、热实体、未关闭线索、近三章摘要和作者/读者信息边界。冷资源再用 `--entity` / `--thread` 追加。
 2. 读取上一章最终结尾、当前章纲、Style/Genre Contract 和本章主章法卡。
-3. 按 `workflow.md` 的单章流程写正文，运行字数与文风门禁。
+3. 按 `workflow.md` 的单章流程写正文。字数合约必须 `pass`。文风门禁按 Voice Pass：只删除 `placeholder-leak`、`meta-leak`、`verbatim-repeat`；其余 lint 命中写入对照表并继续提交，不把 `prose_lint.py` 非零退出当成批次失败。
 4. 从最终正文生成完整变更单，执行 `check` 后立即 `commit`。
 5. 再运行 `batch-status`，确认该章已进入 `completed_chapters` 且 `next_chapter_seq` 前移。
 6. 只有提交成功才读取下一章；下一章必须使用更新后的状态和上一章实际结尾。
@@ -72,7 +72,7 @@ python "<skill-dir>/scripts/story_state.py" batch-status \
 
 ## 5. 中断、失败与恢复
 
-- 写作或门禁失败、字数带外、状态冲突、卷审计 blocker、`needs_review` 或用户停止时，当章不提交并立即结束批次。
+- 写作失败、字数带外、三种泄漏未删除、状态冲突、卷审计 blocker、`needs_review` 或用户停止时，当章不提交并立即结束批次。其余 lint blocking 不结束批次。
 - 已提交章节保持有效；未提交草稿不是 accepted version，下次从 `batch-status.next_chapter_seq` 恢复。
 - `check` 通过后正文又变化，必须重新 `check`；`commit` 会再次读取文件并自行复核。
 - 某章 `commit` 返回卷审计 blocker 时，该章已经提交。记录批次停止原因为审计阻断，不能重复提交该章。

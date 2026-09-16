@@ -58,7 +58,7 @@
 
 ## 写后提交
 
-只在最终正文通过字数、约束和文风门禁后更新。结构化项目按 `long-project-engine.md` 生成变更单并调用事务工具；以下格式仅用于轻量 Markdown 项目。每章记录应短而可验证：
+只在最终正文通过字数合约、章纲约束和 Voice Pass 复核后更新。文风门禁不是 lint 清零；除 `placeholder-leak`、`meta-leak`、`verbatim-repeat` 外，其余命中不阻断提交。结构化项目按 `long-project-engine.md` 生成变更单并调用事务工具；以下格式仅用于轻量 Markdown 项目。每章记录应短而可验证：
 
 ```markdown
 # 第 N 章

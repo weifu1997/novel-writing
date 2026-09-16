@@ -14,7 +14,7 @@
 - 规划、正文、接管、审稿和返修是不同授权，不自动串联。
 - 当前请求优先于已确认项目事实，再是本书文风契约、平台 profile 和通用建议。
 - 立项须通过换皮测试，才能进入大纲或正文。
-- 审稿和去 AI 味先出 findings，再按已接受 ID 和对照表改；写章 Voice Pass 默认只报告。
+- 审稿和去 AI 味先出 findings，再按已接受 ID 和对照表改；写章 Voice Pass 默认只报告。除三种泄漏外，lint blocking 不阻断提交。
 - 可靠日更只用 `batch-status` 恢复；续写未给第 N-M 章时只写一章。
 
 完整行为约定见 [SKILL.md](SKILL.md)，工作流见 [references/workflow.md](references/workflow.md)。

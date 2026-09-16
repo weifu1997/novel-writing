@@ -31,7 +31,7 @@
 - `verify` 检查工作副本是否等于已接受快照。
 - `checkout` 显式恢复已接受快照；覆盖前会把不同的工作稿保存到 `追踪/回滚存档/`。
 - `rollback` 只回滚当前 head，恢复数据库内的正文版本指针、章节记录版本指针和全局状态。它不擅自覆盖工作稿；需要时再运行 `checkout`。
-- 数据库 schema 自动从 v1 迁移到 v2。旧章节会标为 `legacy_unverified`，下次修订必须显式补交字数合约。
+- 数据库 `project_meta.schema_version` 是库文件版本，当前为 2；工具会把旧库从 1 迁到 2。旧章节会标为 `legacy_unverified`，下次修订必须显式补交字数合约。变更单 JSON 的 `schema_version` 是另一字段，必须为 `DELTA_VERSION`（当前为 1）。不要把库版本 2 填进变更单。
 
 ## 初始化
 
@@ -46,6 +46,8 @@ python "<skill-dir>/scripts/story_state.py" init --project "<作品根>" --title
 ## 章节变更单
 
 最终正文和逐章记录完成后，生成一次性 JSON。ID 必须稳定，建议使用 `char.lin-zhou`、`item.copper-key`、`loc.old-home`、`faction.north-gate`、`F001`、`E001`、`ch-001`、`vol-01` 这类命名；改名时保留 ID。
+
+变更单顶层 `schema_version` 必须是 `1`（`DELTA_VERSION`）。这不是数据库的 `SCHEMA_VERSION`（当前为 2）。填 2 会被 `check` 拒绝。
 
 最小骨架：
 

@@ -15,7 +15,7 @@ description: "独立完成中文小说的扫榜选题、对标拆文、开书立
 - 立项未通过换皮测试、说不清为什么只有这个人会这样选时，不进入大纲或正文。
 - 只要大纲时不自动扩成细纲或正文。
 - 写第 N 章、续写或接着写且未给批次范围时，只处理一章；未授权时不批量续写。
-- 只要求接管评估时不改原稿、不建立正式事实源；只要求审稿时不直接返修。
+- 只要求接管评估时不改原稿、不建立正式事实源；只要求审稿、审查大纲或审查章节组织时不直接返修。
 - 改写和去 AI 味默认不改变剧情事实、人物关系、视角和伏笔；不加小标题，不补钩子或爽点。
 - 当前请求 > 已确认项目事实 > 本书文风契约 > 平台 profile > 通用建议。发生冲突时按此顺序裁决并说明。
 
@@ -28,11 +28,11 @@ description: "独立完成中文小说的扫榜选题、对标拆文、开书立
 - 用户提供对标作品、要求拆书或需要从样本提炼功能：读取 [references/comparative-analysis.md](references/comparative-analysis.md)。
 - 用户要求榜单、市场趋势、商业选题或近期平台方向：读取 [references/market-scan.md](references/market-scan.md)。公开起点移动端样本可用 `scripts/market_fetch.py`，结果必须再过 `market_sample.py`。只有进入完整对标拆文时再读取 [references/deconstruction-pipeline.md](references/deconstruction-pipeline.md)。
 - 用户要求把一本长篇或短篇系统拆成可复用资产、续跑既有拆文，或需要建立拆文库供后续召回：读取 [references/deconstruction-pipeline.md](references/deconstruction-pipeline.md)。
-- 接管、迁移或续写已有正文且尚无可信基线：读取 [references/legacy-import.md](references/legacy-import.md)。
-- 审稿、审查大纲或合同、诊断质量、按问题返修、改写或去 AI 味：读取 [references/review-protocol.md](references/review-protocol.md)。审查大纲或 Genre/Short Contract 时不套写章章法卡，也不跑正文 linter。去味同时读取 [references/prose-craft.md](references/prose-craft.md)；没有对照表、未接受的 finding 和超出 diff 预算的改动都不得写正文。
+- 接管、迁移或重建基线，且尚无可信事实源：读取 [references/legacy-import.md](references/legacy-import.md)。普通续写不走接管。
+- 审稿、审查大纲或合同、审查章节组织、诊断质量、按问题返修、改写或去 AI 味：读取 [references/review-protocol.md](references/review-protocol.md)。凡审查、诊断、审结构，一律先走审稿协议，不套写章章法卡；审查大纲或 Genre/Short Contract 时也不跑正文 linter。去味同时读取 [references/prose-craft.md](references/prose-craft.md)；没有对照表、未接受的 finding 和超出 diff 预算的改动都不得写正文。
 - 创作短篇、短故事、单篇或分节但以全文闭环的作品：读取 [references/short-fiction.md](references/short-fiction.md)。短篇不套长篇卷规划与日更协议。
 - 用户明确说日更、今天写第 N-M 章，或给出本章数上限：读取 [references/daily-batch.md](references/daily-batch.md)，并继续按章加载正文、连续性和章法资料。续写未给范围时不加载日更协议。
-- 设计章纲、写章或审查章节组织：读取 [references/chapter-craft.md](references/chapter-craft.md)，再按其路由只加载场景底座和一张主章法卡；必要时摘取一张辅卡。
+- 设计章纲或写章：读取 [references/chapter-craft.md](references/chapter-craft.md)，再按其路由只加载场景底座和一张主章法卡；必要时摘取一张辅卡。审查章节组织仍走审稿协议。
 - 创建或修改正文：读取 [references/prose-craft.md](references/prose-craft.md)。
 - 长篇续写、跨章修改或项目含既有设定：读取 [references/continuity.md](references/continuity.md)。
 - 计划超过 50 万字、超过 150 章、多人协作，或用户要求高连续性保障：再读取 [references/long-project-engine.md](references/long-project-engine.md)。计划超过 100 万字时必须使用其中的结构化状态流程。
@@ -82,7 +82,7 @@ python "<skill-dir>/scripts/chapter_guard.py" <正文文件> --target <目标> -
 python "<skill-dir>/scripts/prose_lint.py" <正文文件>
 ```
 
-该脚本只定位可能的套式句、解释腔、库存动作和节奏过齐，不计算“AI 概率”。写章 Voice Pass 默认只报告；仅 `placeholder-leak`、`meta-leak`、`verbatim-repeat` 可在初稿直接删除。其余命中留给专轮去味，须有对照表。禁止为“像人”故意加错字、随机口语、无关感官、脏话或参差句长。
+该脚本只定位可能的套式句、解释腔、库存动作和节奏过齐，不计算“AI 概率”。写章 Voice Pass 默认只报告；仅 `placeholder-leak`、`meta-leak`、`verbatim-repeat` 可在初稿直接删除，未删这三项不得提交。其余命中含 `trailer-summary` 等 blocking，不把非零退出当成写章或日更失败，留给专轮去味，须有对照表。禁止为“像人”故意加错字、随机口语、无关感官、脏话或参差句长。
 
 ## 交付门禁
 
@@ -92,7 +92,7 @@ python "<skill-dir>/scripts/prose_lint.py" <正文文件>
 2. 字数脚本状态为 `pass`；若用户明确接受带外长度，先把结构化项目变更单的字数合约改成获准边界，再提交。
 3. 每个主要场景至少改变一项状态：信息、关系、目标、风险、资源或情绪位置；纯气氛章也要改变读者理解。
 4. 人物只能依据其已知信息行动；设定、时间线、伤势、物品和未回收线索无冲突。
-5. lint findings 已按语境复核，不把启发式命中机械改坏。
+5. lint findings 已按语境复核，不把启发式命中机械改坏。除三种泄漏外，lint blocking 不阻断本章提交。
 6. 最终版本通过后才更新连续性账本；正文文件不混入提示词、检查表、字数报告或写作术语。
 7. 结构化项目的 `story_state.py check` 与 `commit` 已通过，工作副本需要交付时 `verify` 为 pass；卷末自动审计无未裁决 blocker。
 

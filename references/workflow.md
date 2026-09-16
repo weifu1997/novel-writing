@@ -95,11 +95,13 @@
 
 ### G. Voice Pass
 
-运行本 skill 的 `scripts/prose_lint.py`。默认把命中项写入对照表并报告，不改正文。仅下列 blocking 项可在初稿直接处理，且只删不改写、不补钩子：`placeholder-leak`、`meta-leak`、`verbatim-repeat`。其余套式句、解释腔和库存动作留给专轮去味。专轮去味按第 7 节，须有已接受 findings、对照表，并遵守 diff 预算。不要为了清零报告破坏人物特有表达。
+运行本 skill 的 `scripts/prose_lint.py`。默认把命中项写入对照表并报告，不改正文。文风门禁是已按语境复核，不是 `prose_lint.py` 退出码为 0，也不是 blocking 清零。
+
+仅下列项可在初稿直接处理，且只删不改写、不补钩子：`placeholder-leak`、`meta-leak`、`verbatim-repeat`。未删除这三项时不得提交。`trailer-summary`、`reverse-not-is`、`negation-parade` 及其他命中不阻断写章或日更提交，留给专轮去味。专轮去味按第 7 节，须有已接受 findings、对照表，并遵守 diff 预算。不要为了清零报告破坏人物特有表达。
 
 ### H. Continuity Commit
 
-最终正文通过所有门禁后，才把实际发生的变化写入项目账本。计划发生但正文未发生的内容不能记成事实。
+最终正文通过字数合约、章纲约束，并完成 Voice Pass 复核后，才把实际发生的变化写入项目账本。其余 lint 命中随章提交，不在本步清零。计划发生但正文未发生的内容不能记成事实。
 
 结构化项目不得分别手改人物表、时间线和伏笔表。按 [long-project-engine.md](long-project-engine.md) 从最终正文提取带字数合约和原文证据的章节变更单，先 `check`，再把正文快照、逐章记录、字数结果和全局变化一起 `commit`；`commit` 会重新读取并计数，不能复用旧报告。成功前保留变更单；成功后删除临时变更单并记录 commit id。卷末提交返回审计 blocker 时，本章已经提交，不可重试同一事务；先在当前卷修订并通过新审计，引擎会在此之前阻止开启后续卷。
 
