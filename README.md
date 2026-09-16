@@ -13,6 +13,9 @@
 - 先保证故事成立、人物可信、字数合约准确，再考虑平台偏好。
 - 规划、正文、接管、审稿和返修是不同授权，不自动串联。
 - 当前请求优先于已确认项目事实，再是本书文风契约、平台 profile 和通用建议。
+- 立项须通过换皮测试，才能进入大纲或正文。
+- 审稿和去 AI 味先出 findings，再按已接受 ID 和对照表改；写章 Voice Pass 默认只报告。
+- 可靠日更只用 `batch-status` 恢复；续写未给第 N-M 章时只写一章。
 
 完整行为约定见 [SKILL.md](SKILL.md)，工作流见 [references/workflow.md](references/workflow.md)。
 
@@ -23,6 +26,9 @@ SKILL.md                 技能入口与交付门禁
 agents/openai.yaml       对外展示名称与默认提示
 references/              按任务加载的写作资料
   workflow.md            模式路由：立项、规划、写章、日更、接管、审稿
+  genre-craft.md         题材契约与换皮测试
+  review-protocol.md     审稿证据链、附件和返修闸门
+  daily-batch.md         串行日更；仅明确批次范围时进入
   genre/                 题材工艺（都市、悬疑、言情、历史、奇幻科幻等）
   chapter-craft/         章法卡（开篇、信息悬念、对话关系、行动、调查、高潮、过渡）
   platform-profiles.md   平台写作侧假设，不是当期规则原文
@@ -67,6 +73,7 @@ python scripts/story_state.py commit --project 项目目录 --body 正文/第1�
 python scripts/story_state.py context --project 项目目录
 python scripts/story_state.py impact --project 项目目录 --chapter ch-001
 python scripts/story_state.py verify --project 项目目录
+python scripts/story_state.py batch-status --project 项目目录 --start 12 --end 14
 ```
 
 `check` 和 `commit` 都会对当时正文重新计数。提交失败时，正文快照、章节记录和全局状态都不得推进。修改旧章前先跑 `impact`；下游章节复核完成、`verify` 清零 `needs_review` 之前不要续写。

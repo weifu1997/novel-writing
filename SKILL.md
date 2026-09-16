@@ -12,25 +12,26 @@ description: "独立完成中文小说的扫榜选题、对标拆文、开书立
 识别四项：操作（扫榜/拆文/立项/规划/写章/日更/续写/改写/接管旧稿/审稿/返修）、对象、交付范围、停笔点。用户已给足信息时直接执行；只有缺失项会实质改变作品时才追问，且只问必要项。
 
 - 只讨论结构时不建项目、不写正文。
+- 立项未通过换皮测试、说不清为什么只有这个人会这样选时，不进入大纲或正文。
 - 只要大纲时不自动扩成细纲或正文。
-- 写第 N 章时只处理该章；未授权时不批量续写。
+- 写第 N 章、续写或接着写且未给批次范围时，只处理一章；未授权时不批量续写。
 - 只要求接管评估时不改原稿、不建立正式事实源；只要求审稿时不直接返修。
-- 改写和去 AI 味默认不改变剧情事实、人物关系、视角和伏笔。
+- 改写和去 AI 味默认不改变剧情事实、人物关系、视角和伏笔；不加小标题，不补钩子或爽点。
 - 当前请求 > 已确认项目事实 > 本书文风契约 > 平台 profile > 通用建议。发生冲突时按此顺序裁决并说明。
 
 ## 按任务加载
 
 不要一次性加载全部资料。先读取 [references/workflow.md](references/workflow.md) 中当前模式，再按下列条件精确加载：
 
-- 题材选择、题材融合或题材成色不足：读取 [references/genre-craft.md](references/genre-craft.md)，再按其路由只加载一个主题材模块；混合题材最多摘取一个辅模块的相关条目。
+- 开书立项、从零构思、题材选择、题材融合或题材成色不足：读取 [references/genre-craft.md](references/genre-craft.md)，再按其路由只加载一个主题材模块；混合题材最多摘取一个辅模块的相关条目。立项须完成 Genre Contract 与换皮测试，未通过不得进入大纲或正文。
 - 规划约 30-150 章、制作卷纲或阶段滚动计划：读取 [references/volume-planning.md](references/volume-planning.md)。
 - 用户提供对标作品、要求拆书或需要从样本提炼功能：读取 [references/comparative-analysis.md](references/comparative-analysis.md)。
 - 用户要求榜单、市场趋势、商业选题或近期平台方向：读取 [references/market-scan.md](references/market-scan.md)。公开起点移动端样本可用 `scripts/market_fetch.py`，结果必须再过 `market_sample.py`。只有进入完整对标拆文时再读取 [references/deconstruction-pipeline.md](references/deconstruction-pipeline.md)。
 - 用户要求把一本长篇或短篇系统拆成可复用资产、续跑既有拆文，或需要建立拆文库供后续召回：读取 [references/deconstruction-pipeline.md](references/deconstruction-pipeline.md)。
 - 接管、迁移或续写已有正文且尚无可信基线：读取 [references/legacy-import.md](references/legacy-import.md)。
-- 审稿、诊断质量、按问题返修、改写或去 AI 味：读取 [references/review-protocol.md](references/review-protocol.md)。去味同时读取 [references/prose-craft.md](references/prose-craft.md)；没有对照表、未接受的 finding 和超出 diff 预算的改动都不得写正文。
+- 审稿、审查大纲或合同、诊断质量、按问题返修、改写或去 AI 味：读取 [references/review-protocol.md](references/review-protocol.md)。审查大纲或 Genre/Short Contract 时不套写章章法卡，也不跑正文 linter。去味同时读取 [references/prose-craft.md](references/prose-craft.md)；没有对照表、未接受的 finding 和超出 diff 预算的改动都不得写正文。
 - 创作短篇、短故事、单篇或分节但以全文闭环的作品：读取 [references/short-fiction.md](references/short-fiction.md)。短篇不套长篇卷规划与日更协议。
-- 用户明确授权一次写多章、日更或第 N-M 章：读取 [references/daily-batch.md](references/daily-batch.md)，并继续按章加载正文、连续性和章法资料。
+- 用户明确说日更、今天写第 N-M 章，或给出本章数上限：读取 [references/daily-batch.md](references/daily-batch.md)，并继续按章加载正文、连续性和章法资料。续写未给范围时不加载日更协议。
 - 设计章纲、写章或审查章节组织：读取 [references/chapter-craft.md](references/chapter-craft.md)，再按其路由只加载场景底座和一张主章法卡；必要时摘取一张辅卡。
 - 创建或修改正文：读取 [references/prose-craft.md](references/prose-craft.md)。
 - 长篇续写、跨章修改或项目含既有设定：读取 [references/continuity.md](references/continuity.md)。
@@ -81,7 +82,7 @@ python "<skill-dir>/scripts/chapter_guard.py" <正文文件> --target <目标> -
 python "<skill-dir>/scripts/prose_lint.py" <正文文件>
 ```
 
-该脚本只定位可能的套式句、解释腔、库存动作和节奏过齐，不计算“AI 概率”。逐条回到语境判断：有角色声线或叙事功能的保留，确实重复、替读者总结或脱离视角的才局部返修。禁止为“像人”故意加错字、随机口语、无关感官、脏话或参差句长。
+该脚本只定位可能的套式句、解释腔、库存动作和节奏过齐，不计算“AI 概率”。写章 Voice Pass 默认只报告；仅 `placeholder-leak`、`meta-leak`、`verbatim-repeat` 可在初稿直接删除。其余命中留给专轮去味，须有对照表。禁止为“像人”故意加错字、随机口语、无关感官、脏话或参差句长。
 
 ## 交付门禁
 

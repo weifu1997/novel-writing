@@ -56,6 +56,18 @@
       "body": "这意味着他已经没有退路。"
     },
     {
+      "id": "explanation-summary-connective",
+      "code": "explanation",
+      "severity": "advisory",
+      "body": "总之他已经没有退路。"
+    },
+    {
+      "id": "explanation-forced-emotion",
+      "code": "explanation",
+      "severity": "advisory",
+      "body": "让人不禁想起那把钥匙。"
+    },
+    {
       "id": "mind-summary",
       "code": "mind-summary",
       "severity": "advisory",

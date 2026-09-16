@@ -1,4 +1,4 @@
 interface:
   display_name: "小说写作工坊"
   short_description: "扫榜拆文、长短篇创作、串行日更、旧稿接管与百万字连续性"
-  default_prompt: "Use $novel-writing for market-informed concepting, evidence-based deconstruction, short or long fiction planning and drafting, serial daily batches, legacy takeover, review, revision, and million-word continuity control."
+  default_prompt: "Use $novel-writing only for the named operation and range. Load market scan or deconstruction solely when the user asks for rankings or comparative analysis. Default to one chapter unless the user authorizes a daily batch by chapter numbers. Review and deslop stay read-only until accepted findings exist."
