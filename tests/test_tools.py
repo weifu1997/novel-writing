@@ -129,6 +129,25 @@ class ProseLintTests(unittest.TestCase):
         self.assertTrue(report["has_blocking"])
         self.assertTrue({"reverse-not-is", "negation-parade", "trailer-summary", "meta-leak", "placeholder-leak"} <= codes)
 
+    def test_regression_fixture_hits_and_spares_keep_cases(self) -> None:
+        fixture_path = SKILL_ROOT / "tests" / "fixtures" / "prose-lint-regression.json"
+        fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+        with tempfile.TemporaryDirectory() as directory:
+            for sample in fixture["must_hit"]:
+                path = Path(directory) / f"{sample['id']}.md"
+                path.write_text("第一章\n" + sample["body"], encoding="utf-8")
+                matches = [item for item in lint(path)["findings"] if item["code"] == sample["code"]]
+                self.assertTrue(matches, msg=f"{sample['id']} should still hit {sample['code']}")
+                self.assertEqual(matches[0]["severity"], sample["severity"])
+            for sample in fixture["must_not_hit"]:
+                path = Path(directory) / f"{sample['id']}.md"
+                path.write_text("第一章\n" + sample["body"], encoding="utf-8")
+                self.assertEqual(
+                    lint(path)["findings"],
+                    [],
+                    msg=f"{sample['id']} should not gain a new lint hit",
+                )
+
 
 class LegacyInventoryTests(unittest.TestCase):
     def test_chinese_chapter_numbers(self) -> None:

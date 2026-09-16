@@ -103,5 +103,5 @@ python "<skill-dir>/scripts/manuscript_guard.py" <正文或按顺序列出的小
 - 高潮是否使用前置材料，结尾是否留下必要余波。
 - 全文总字数和投稿格式是否通过。
 
-返修先接受 findings 并锁定事实不变量；因果和线索问题先于语言问题。修复后重跑全文字数、线索回看、视角、格式和 `prose_lint.py`。只有原问题消失、未破坏前置证据且全文门禁通过，finding 才标为 `fixed`。
+返修先接受 findings 并锁定事实不变量；因果和线索问题先于语言问题。`suggestion` 与 `confidence: low` 默认不改。表达返修须带对照表并遵守 [review-protocol.md](review-protocol.md) 的 diff 预算。修复后重跑全文字数、线索回看、视角、格式和 `prose_lint.py`。只有原问题消失、未破坏前置证据且全文门禁通过，finding 才标为 `fixed`。
 

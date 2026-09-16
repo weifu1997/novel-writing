@@ -28,7 +28,7 @@ description: "独立完成中文小说的扫榜选题、对标拆文、开书立
 - 用户要求榜单、市场趋势、商业选题或近期平台方向：读取 [references/market-scan.md](references/market-scan.md)。公开起点移动端样本可用 `scripts/market_fetch.py`，结果必须再过 `market_sample.py`。只有进入完整对标拆文时再读取 [references/deconstruction-pipeline.md](references/deconstruction-pipeline.md)。
 - 用户要求把一本长篇或短篇系统拆成可复用资产、续跑既有拆文，或需要建立拆文库供后续召回：读取 [references/deconstruction-pipeline.md](references/deconstruction-pipeline.md)。
 - 接管、迁移或续写已有正文且尚无可信基线：读取 [references/legacy-import.md](references/legacy-import.md)。
-- 审稿、诊断质量或按问题返修：读取 [references/review-protocol.md](references/review-protocol.md)。
+- 审稿、诊断质量、按问题返修、改写或去 AI 味：读取 [references/review-protocol.md](references/review-protocol.md)。去味同时读取 [references/prose-craft.md](references/prose-craft.md)；没有对照表、未接受的 finding 和超出 diff 预算的改动都不得写正文。
 - 创作短篇、短故事、单篇或分节但以全文闭环的作品：读取 [references/short-fiction.md](references/short-fiction.md)。短篇不套长篇卷规划与日更协议。
 - 用户明确授权一次写多章、日更或第 N-M 章：读取 [references/daily-batch.md](references/daily-batch.md)，并继续按章加载正文、连续性和章法资料。
 - 设计章纲、写章或审查章节组织：读取 [references/chapter-craft.md](references/chapter-craft.md)，再按其路由只加载场景底座和一张主章法卡；必要时摘取一张辅卡。
@@ -73,7 +73,7 @@ python "<skill-dir>/scripts/chapter_guard.py" <正文文件> --target <目标> -
 
 ## 文风不是禁词分数
 
-写正文前建立本轮 `Style Contract`：视角与叙事距离、叙述声口、句段节奏、对话声纹、意象来源、信息留白、明确禁忌。优先从用户自己的样章和已确认章节提取；没有样章时采用克制的题材默认值，并把它当可调整假设。
+写正文前建立本轮 `Style Contract`：视角与叙事距离、叙述声口、句段节奏、对话声纹、意象来源、信息留白、明确禁忌。优先从用户自己的样章和已确认章节提取，平台口味不得覆盖样章；没有样章时采用克制的题材默认值，并把它当可调整假设。
 
 正文完成后运行：
 

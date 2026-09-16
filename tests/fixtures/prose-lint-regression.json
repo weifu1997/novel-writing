@@ -1,0 +1,109 @@
+{
+  "note": "Rules regression only. A hit does not mean the sentence must be rewritten.",
+  "must_hit": [
+    {
+      "id": "reverse-not-is",
+      "code": "reverse-not-is",
+      "severity": "blocking",
+      "body": "是胜利，不是失败。"
+    },
+    {
+      "id": "negation-parade",
+      "code": "negation-parade",
+      "severity": "blocking",
+      "body": "没有退路，没有借口。"
+    },
+    {
+      "id": "trailer-summary",
+      "code": "trailer-summary",
+      "severity": "blocking",
+      "body": "他把铜钥匙放回口袋，转身下楼。雨还在下。这一夜注定改变一切。"
+    },
+    {
+      "id": "placeholder-leak",
+      "code": "placeholder-leak",
+      "severity": "blocking",
+      "body": "他推开门。TODO 补对话。"
+    },
+    {
+      "id": "meta-leak",
+      "code": "meta-leak",
+      "severity": "blocking",
+      "body": "细纲写着高潮。"
+    },
+    {
+      "id": "verbatim-repeat",
+      "code": "verbatim-repeat",
+      "severity": "blocking",
+      "body": "他把铜钥匙重新塞回湿口袋。他把铜钥匙重新塞回湿口袋。"
+    },
+    {
+      "id": "not-but",
+      "code": "not-but",
+      "severity": "advisory",
+      "body": "不是害怕，而是算过代价。"
+    },
+    {
+      "id": "voice-contrast",
+      "code": "voice-contrast",
+      "severity": "advisory",
+      "body": "声音不大，却把屋里的人都按住了。"
+    },
+    {
+      "id": "explanation",
+      "code": "explanation",
+      "severity": "advisory",
+      "body": "这意味着他已经没有退路。"
+    },
+    {
+      "id": "mind-summary",
+      "code": "mind-summary",
+      "severity": "advisory",
+      "body": "他终于明白钥匙不能交出去。雨还在下，楼道里有人抽烟。他把门锁好，下到一楼，穿过院子，走到街口，又回头看了一眼黑着灯的窗口。"
+    },
+    {
+      "id": "stock-reaction",
+      "code": "stock-reaction",
+      "severity": "advisory",
+      "body": "他深吸一口气，把杯子放下。"
+    },
+    {
+      "id": "generic-metaphor",
+      "code": "generic-metaphor",
+      "severity": "advisory",
+      "body": "他仿佛掉进井里。"
+    },
+    {
+      "id": "trailer-ending",
+      "code": "trailer-ending",
+      "severity": "advisory",
+      "body": "他把铜钥匙放回口袋，转身下楼。雨还在下。他不知道的是，门后有人。"
+    }
+  ],
+  "must_not_hit": [
+    {
+      "id": "keep-unexplained-action",
+      "body": "他把钥匙放回口袋，没有解释。"
+    },
+    {
+      "id": "keep-short-cuts",
+      "body": "门开了。雨还在下。"
+    },
+    {
+      "id": "keep-dialogue-purpose",
+      "body": "她问钱够不够，他只点头。"
+    },
+    {
+      "id": "keep-plain-negation",
+      "body": "不是门，是墙。"
+    },
+    {
+      "id": "keep-concrete-detail",
+      "body": "雨打在窗上，钥匙还在桌上。"
+    },
+    {
+      "id": "keep-however",
+      "body": "然而他还是走了。"
+    }
+  ]
+}

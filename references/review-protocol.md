@@ -63,28 +63,47 @@ status: open | accepted | fixed | dismissed
 
 `prose_lint.py`、字数脚本和卷审计是证据来源之一，不自动产生最终结论。lint 默认 `--fail-on blocking`：`reverse-not-is`、`negation-parade`、`trailer-summary`、`placeholder-leak`、`meta-leak`、`verbatim-repeat` 可作为 `category=prose` 的候选 finding，仍须回到语境判断。平台检查只检验已确认的当前规则，不能用陈旧经验预测流量。
 
+文风判断对照本书 Style Contract，不对照通用“像人”口味。有作者样章或已确认章节时，必须从中提取契约；平台 profile 不得覆盖样章证据。没有样章时采用克制的题材默认值，并标明这是可调整假设。
+
 ## 审稿交付
 
-先按严重度列 findings，再给：
+先按严重度列 findings，再给强制附件。缺任一附件时不得称为审完：
 
 - 审查范围与版本。
-- 已运行的确定性检查及结果。
+- 已运行的确定性检查及结果：至少附 `prose_lint.py` 的 JSON 或等价摘录；审查正文时附字数结果；结构化项目附 `verify` 或说明未跑原因。
+- 覆盖边界：已检查章节/段落，以及未检查部分。
 - 无发现的关键维度，避免用户误以为漏查。
 - 未覆盖内容与剩余风险。
 - 建议返修顺序：根因在前、表达在后。
 
 没有发现问题时明确说“未发现”，同时说明覆盖边界；不要为了显得有价值而制造建议。
 
+默认不进入返修的条目：全部 `suggestion`，以及 `confidence: low` 的任何严重度。用户必须点名 finding ID 后，状态才能改为 `accepted`。用户只说“按报告改”或“去 AI 味”时，只接受 `block` / `important` 且 `confidence` 为 `high` 或 `medium` 的条目，并在返修前列出将消费的 ID。
+
 ## 返修协议
 
-返修前把用户接受的 finding 状态改为 `accepted`，逐项锁定 `invariants`。按以下顺序执行：
+返修前把用户接受的 finding 状态改为 `accepted`，逐项锁定 `invariants`。没有对照表不得改文件。对照表最小字段：
 
-1. 先处理会改变事实或因果的根因，再处理其下游表达。
+```text
+finding_id -> 原句或定位 -> 处理（删/改/保留）-> 改后文本或保留理由 -> 影响章节
+```
+
+按以下顺序执行：
+
+1. 先处理会改变事实或因果的根因，再处理其下游表达。修法会改情节、关系、视角或伏笔时，不得混入去 AI 味；拆成结构/事实 finding，等用户接受后再修。
 2. 修改旧章前运行影响分析；超出用户授权的后续章节只列影响，不擅自连改。
-3. 每次修复记录 `finding_id -> 修改位置 -> 采用方案 -> 影响章节`。
+3. 每次修复写入对照表，禁止出现无法指回 accepted ID 的改动。
 4. 事实变化走结构化 revision 和下游 revalidate/revision；纯文字修订也重新提交该章完整依赖与人物弧。
 5. 重新运行原字数合约、连续性、lint 和必要的卷审计。
 6. 回到原始证据链复核：问题是否消失、不变量是否保留、是否引入新问题。通过后标为 `fixed`；拒绝该判断则记录理由并标为 `dismissed`。
 
 返修不能只删除被指出的句子。若 finding 的根因是动机或因果缺失，必须修复使问题成立的最小结构，同时保护已确认剧情和人物选择。
+
+纯表达修订（去 AI 味、文风返修）另受 diff 预算约束：只能改对照表中的目标句及其前后各一句；禁止整章重写。超出该窗口的改动必须回退，或升格为用户明确授权的结构返修。
+
+同一轮不得“改完后原地自评通过”。改后复核应新开只读轮次，只给改后正文和原 findings，不给改动说明；或由用户对 diff，每个 hunk 必须能指回一个 accepted ID。
+
+## lint 回归样本
+
+改 `scripts/prose_lint.py` 的规则、阈值或 blocking 集合前，先跑 `tests/test_tools.py` 中的 `ProseLintTests`，并核对本 skill 的 `tests/fixtures/prose-lint-regression.json`。样本区分“必须仍命中”和“不得新增命中”。新增误伤或丢失既有覆盖时，先修规则或更新样本并写明分化原因，再提交规则变更。该文件不证明句子是否该改；语境去留仍按 Style Contract 和删除测试裁决。
 
